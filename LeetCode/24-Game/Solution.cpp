@@ -1,56 +1,57 @@
 class Solution {
+    const double EPS = 1e-6; // tolerance for floating-point comparison
+
 public:
     bool judgePoint24(vector<int>& cards) {
-        vector<double> nums;
-        for (int c : cards)
-            nums.push_back((double)c);
-        return helper(nums);
+        vector<double> nums(cards.begin(),
+                            cards.end()); // convert int -> double
+        return canMake24(nums);
     }
 
 private:
-    bool helper(vector<double>& nums) {
+    // Recursive function to check if we can form 24 from current numbers
+    bool canMake24(vector<double>& nums) {
         int n = nums.size();
+
+        // Base case: only one number left → check if it's 24
         if (n == 1) {
-            return fabs(nums[0] - 24.0) <
-                   1e-6; // tolerance for floating-point errors
+            return fabs(nums[0] - 24.0) < EPS;
         }
 
-        // pick two numbers
+        // Try all pairs of numbers (i, j)
         for (int i = 0; i < n; i++) {
             for (int j = i + 1; j < n; j++) {
                 double a = nums[i], b = nums[j];
 
-                // generate possible results of applying operations
-                vector<double> ops = calOperations(a, b);
-
-                // create next round excluding nums[i] and nums[j]
-                vector<double> next;
+                // Remaining numbers after removing i and j
+                vector<double> rest;
                 for (int k = 0; k < n; k++) {
                     if (k != i && k != j)
-                        next.push_back(nums[k]);
+                        rest.push_back(nums[k]);
                 }
 
-                // try each operation result
-                for (double v : ops) {
-                    next.push_back(v);
-                    if (helper(next))
+                // Try all possible results with a and b
+                for (double val : possibleResults(a, b)) {
+                    rest.push_back(val);
+                    if (canMake24(rest))
                         return true;
-                    next.pop_back();
+                    rest.pop_back(); // backtrack
                 }
             }
         }
         return false;
     }
 
-    vector<double> calOperations(double a, double b) {
+    // Generate all valid results from two numbers
+    vector<double> possibleResults(double a, double b) {
         vector<double> res;
         res.push_back(a + b);
         res.push_back(a - b);
         res.push_back(b - a);
         res.push_back(a * b);
-        if (fabs(b) > 1e-6)
+        if (fabs(b) > EPS)
             res.push_back(a / b); // avoid division by zero
-        if (fabs(a) > 1e-6)
+        if (fabs(a) > EPS)
             res.push_back(b / a);
         return res;
     }
