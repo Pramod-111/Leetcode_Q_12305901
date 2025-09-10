@@ -1,29 +1,21 @@
 class Solution {
 public:
     vector<int> findIntersectionValues(vector<int>& nums1, vector<int>& nums2) {
-        unordered_map<int, int> freq1, freq2;
-
-        // store frequency of elements in nums1
-        for (int x : nums1) {
-            freq1[x]++;
-        }
-
-        // store frequency of elements in nums2
-        for (int y : nums2) {
-            freq2[y]++;
-        }
+        // store unique elements for quick lookup
+        unordered_set<int> set1(nums1.begin(), nums1.end());
+        unordered_set<int> set2(nums2.begin(), nums2.end());
 
         int answer1 = 0, answer2 = 0;
 
         // count nums1[i] that exists in nums2
         for (int x : nums1) {
-            if (freq2.count(x))
+            if (set2.count(x))
                 answer1++;
         }
 
         // count nums2[i] that exists in nums1
         for (int y : nums2) {
-            if (freq1.count(y))
+            if (set1.count(y))
                 answer2++;
         }
 
