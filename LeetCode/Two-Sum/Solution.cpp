@@ -1,17 +1,12 @@
-class Solution {
-public:
-    //first
-    vector<int> twoSum(vector<int>& nums,int target){
-        map<int,int>mpp;
-        int n=nums.size();
-        for(int i=0;i<n;i++){
-            int num=nums[i];
-            int moreNeeded = target - num;
-            if(mpp.find(moreNeeded) != mpp.end()) {
-                return {mpp[moreNeeded], i};
-            }
-            mpp[num] = i;
-        }
-        return {-1,-1};
+ for(var i =0;i<nums.length;i++){
+    var item = nums[i];   
+    for(var j=0; j < nums.length;j++){
+        var item2 = nums[j];
+        var sum = item + item2;
+        
+    if(sum === target ){
+      return [i,j];
+      
     }
-};
+  }
+ }
