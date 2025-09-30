@@ -1,0 +1,1 @@
+       return sum((comb(len(nums)-1,i)*n)%10 for i,n in enumerate(nums))%10
