@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int minLengthAfterRemovals(string s) {
+        string torem = s;
+
+        int countA = 0;
+        int countB = 0;
+
+        for(char c : torem) {
+            if(c == 'a') countA++;
+            else countB++;
+        }
+        return abs(countA - countB);
+    }
+};
